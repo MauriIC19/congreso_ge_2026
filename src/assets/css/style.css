@@ -51,6 +51,21 @@ h6 {
   margin-top: 70px;
 }
 
+#nav {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px 0px 10px 0px;
+  gap: 50px;
+  position: fixed;
+  background: rgb(3, 14, 29);
+  color: white;
+  bottom: 0px;
+  z-index: 9999;
+  color: black;
+}
+
 /* Prelaoder */
 #preloader {
   position: fixed;
@@ -143,11 +158,11 @@ h6 {
   height: 90px;
   position: fixed;
   left: 0;
-  top: 0;
+  top: 0px;
   right: 0;
   transition: all 0.5s;
   z-index: 997;
-  background: rgba(6, 12, 34, 0.98);
+  background: rgba(6, 12, 34);
 }
 
 #header.header-scrolled,
@@ -190,7 +205,7 @@ h6 {
   .img-fluid {
     max-width: 35%;
     height: auto;
-  } 
+  }
 
   .img-secondary {
     top: 10%;
@@ -201,7 +216,7 @@ h6 {
 .img-fluid {
   max-width: 90%;
   height: auto;
-} 
+}
 
 .img-secondary {
   width: 170px;
@@ -501,10 +516,11 @@ h6 {
 #hero {
   width: 100%;
   height: 102vh;
-  background: url(../img/hero-bg.jpg) top center;
+
   background-size: cover;
   overflow: hidden;
   position: relative;
+  margin-top: 90px;
 }
 
 @media (min-width: 1024px) {
@@ -527,7 +543,7 @@ h6 {
   position: absolute;
   bottom: 0;
   left: 0;
-  top: 90px;
+  top: 0px;
   right: 0;
   display: flex;
   justify-content: center;
@@ -581,7 +597,10 @@ h6 {
 #hero .play-btn {
   width: 94px;
   height: 94px;
-  background: radial-gradient(rgb(70, 188, 247) 50%, rgba(101, 111, 150, 0.15) 52%);
+  background: radial-gradient(
+    rgb(70, 188, 247) 50%,
+    rgba(101, 111, 150, 0.15) 52%
+  );
   border-radius: 50%;
   display: block;
   position: relative;
@@ -664,7 +683,7 @@ h6 {
   -webkit-animation-delay: 0.8s;
   animation-delay: 0.8s;
   border: 3px solid rgb(70, 188, 247);
-  background-color: rgba(119, 204, 247, 0.20);
+  background-color: rgba(119, 204, 247, 0.2);
 }
 
 #hero .about-btn:hover {
@@ -1554,7 +1573,7 @@ h6 {
 --------------------------------------------------------------*/
 #footer {
   background: #101522;
-  padding: 0 0 25px 0;
+  padding: 0 0 80px 0;
   color: #eee;
   font-size: 14px;
 }
@@ -1714,7 +1733,6 @@ h6 {
   position: relative;
 }
 
-
 .slider:before,
 .slider:after {
   position: absolute;
@@ -1735,11 +1753,11 @@ h6 {
   background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
 }
 
-@media (max-width: 992px) { 
+@media (max-width: 992px) {
   .slider:before {
     background: none;
   }
-  
+
   .slider:after {
     background: none;
   }
@@ -1768,8 +1786,6 @@ h6 {
   }
 }
 
-
-
 .main-logo {
   margin-top: 15px;
   height: auto;
@@ -1777,7 +1793,6 @@ h6 {
   max-width: 50%;
   margin-bottom: 3rem;
 }
-
 
 @media (max-width: 992px) {
   .main-logo {
@@ -1787,4 +1802,21 @@ h6 {
 
 #schedule hr {
   color: rgb(70, 188, 247);
+}
+
+.main-nav {
+  padding: 2px 20px 2px 20px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.main-nav:hover {
+  color: white;
+}
+
+.main-nav.active {
+  border-radius: 15px;
+  color: white;
+  border-style: solid;
+  border-color: rgb(70, 188, 247);
+  font-weight: bold;
 }
