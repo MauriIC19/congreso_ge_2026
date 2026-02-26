@@ -4,7 +4,7 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
-(function() {
+(function () {
   "use strict";
 
   /**
@@ -48,7 +48,27 @@
     let position = window.scrollY + 200
     navbarlinks.forEach(navbarlink => {
       if (!navbarlink.hash) return
-      let section = select(navbarlink.hash)
+
+
+      let sectionId = null
+      const hash = navbarlink.hash
+      if (hash.includes('?section=')) {
+        const params = new URLSearchParams(hash.split('?')[1])
+        sectionId = params.get('section')
+      } else if (hash.startsWith('#/')) {
+
+        const hashParts = hash.split('?')
+        if (hashParts.length > 1) {
+          const params = new URLSearchParams(hashParts[1])
+          sectionId = params.get('section')
+        }
+      } else {
+
+        sectionId = hash.substring(1)
+      }
+
+      if (!sectionId) return
+      let section = select('#' + sectionId)
       if (!section) return
       if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
         navbarlink.classList.add('active')
@@ -71,7 +91,21 @@
       offset -= 20
     }
 
-    let elementPos = select(el).offsetTop
+    let sectionId = el
+    if (el.includes('?section=')) {
+      const params = new URLSearchParams(el.split('?')[1])
+      sectionId = params.get('section')
+    } else if (el.startsWith('#/')) {
+      const hashParts = el.split('?')
+      if (hashParts.length > 1) {
+        const params = new URLSearchParams(hashParts[1])
+        sectionId = params.get('section')
+      }
+    } else if (el.startsWith('#')) {
+      sectionId = el.substring(1)
+    }
+
+    let elementPos = select('#' + sectionId).offsetTop
     window.scrollTo({
       top: elementPos - offset,
       behavior: 'smooth'
@@ -113,46 +147,92 @@
   /**
    * Mobile nav toggle
    */
-  on('click', '.mobile-nav-toggle', function(e) {
-    select('#navbar').classList.toggle('navbar-mobile')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
+  on('click', 'body', function (e) {
+    if (e.target.closest('.mobile-nav-toggle')) {
+      const navbar = select('#navbar')
+      const toggle = e.target.closest('.mobile-nav-toggle')
+      if (navbar) {
+        navbar.classList.toggle('navbar-mobile')
+        toggle.classList.toggle('bi-list')
+        toggle.classList.toggle('bi-x')
+      }
+    }
   })
 
   /**
    * Mobile nav dropdowns activate
    */
-  on('click', '.navbar .dropdown > a', function(e) {
-    if (select('#navbar').classList.contains('navbar-mobile')) {
-      e.preventDefault()
-      this.nextElementSibling.classList.toggle('dropdown-active')
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('.navbar .dropdown > a')) {
+      const navbar = select('#navbar')
+      if (navbar && navbar.classList.contains('navbar-mobile')) {
+        e.preventDefault()
+        e.target.nextElementSibling.classList.toggle('dropdown-active')
+      }
     }
-  }, true)
+  })
 
   /**
    * Scrool with ofset on links with a class name .scrollto
    */
-  on('click', '.scrollto', function(e) {
-    if (select(this.hash)) {
-      e.preventDefault()
-
-      let navbar = select('#navbar')
-      if (navbar.classList.contains('navbar-mobile')) {
-        navbar.classList.remove('navbar-mobile')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
+  document.addEventListener('click', function (e) {
+    const scrolltoLink = e.target.closest('.scrollto')
+    if (scrolltoLink && scrolltoLink.hash) {
+      // Extract section ID from hash (handles #/?section=x and #section formats)
+      let sectionId = null
+      const hash = scrolltoLink.hash
+      if (hash.includes('?section=')) {
+        const params = new URLSearchParams(hash.split('?')[1])
+        sectionId = params.get('section')
+      } else if (hash.startsWith('#/')) {
+        const hashParts = hash.split('?')
+        if (hashParts.length > 1) {
+          const params = new URLSearchParams(hashParts[1])
+          sectionId = params.get('section')
+        }
+      } else {
+        sectionId = hash.substring(1)
       }
-      scrollto(this.hash)
+
+      if (sectionId && select('#' + sectionId)) {
+        e.preventDefault()
+
+        let navbar = select('#navbar')
+        if (navbar && navbar.classList.contains('navbar-mobile')) {
+          navbar.classList.remove('navbar-mobile')
+          let navbarToggle = select('.mobile-nav-toggle')
+          if (navbarToggle) {
+            navbarToggle.classList.toggle('bi-list')
+            navbarToggle.classList.toggle('bi-x')
+          }
+        }
+        scrollto(scrolltoLink.hash)
+      }
     }
-  }, true)
+  })
 
   /**
    * Scroll with ofset on page load with hash links in the url
    */
   window.addEventListener('load', () => {
     if (window.location.hash) {
-      if (select(window.location.hash)) {
+      // Extract section ID from hash (handles #/?section=x and #section formats)
+      let sectionId = null
+      const hash = window.location.hash
+      if (hash.includes('?section=')) {
+        const params = new URLSearchParams(hash.split('?')[1])
+        sectionId = params.get('section')
+      } else if (hash.startsWith('#/')) {
+        const hashParts = hash.split('?')
+        if (hashParts.length > 1) {
+          const params = new URLSearchParams(hashParts[1])
+          sectionId = params.get('section')
+        }
+      } else {
+        sectionId = hash.substring(1)
+      }
+
+      if (sectionId && select('#' + sectionId)) {
         scrollto(window.location.hash)
       }
     }
@@ -212,7 +292,7 @@
   /**
    * Buy tickets select the ticket type on click
    */
-  on('show.bs.modal', '#buy-ticket-modal', function(event) {
+  on('show.bs.modal', '#buy-ticket-modal', function (event) {
     select('#buy-ticket-modal #ticket-type').value = event.relatedTarget.getAttribute('data-ticket-type')
   })
 
